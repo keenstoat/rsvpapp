@@ -1,0 +1,10 @@
+simExtROS_enableSubscriber('/cmd_val', 0, simros_strcmd_set_twist_command, -1, -1, 'Twist')
+
+local ros_data = sim.getStringSignal('Twist')
+if (ros_data) then
+  local twist_data = sim.unpackFloatTable(ros_data)
+  local left_speed = (twist_data[1]-0.5*axes_length*twist_data[6])/wheel_radius
+  local right_speed = (twist_data[1]+0.5*axes_length*twist_data[6])/wheel_radius
+  sim.setJointTargetVelocity(motorLeft, left_speed)
+  sim.setJointTargetVelocity(motorRight, right_speed)
+end
